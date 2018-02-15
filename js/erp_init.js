@@ -139,8 +139,6 @@ function init()
   Store.AddShop(shop2);
   Store.AddShop(shop3);
 
-
-  var usuario = new User("prueba","prueba");
   //console.log(usuario.toString());
 
   /*//iterador de las tiendas y de los productos de cada tienda;

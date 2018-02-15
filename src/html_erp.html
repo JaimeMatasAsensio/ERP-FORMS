@@ -14,7 +14,7 @@
         <div class="col-md-2">
           <img class="img-rounded col-md-2" id="logo" src="../imagenes/icon.png" alt="Icono ERP" title="Logo ERP">
         </div>
-        <h1 class="col-md-7" id="cabeceraPractica">Practica Tema 7 ERP con DOM</h1>
+        <h1 class="col-md-7" id="cabeceraPractica">Practica Tema 7 ERP con Formularios</h1>
         <div class="col-md-3" id="formLogIn">
           <form name="login" id="login" method="post">
             <div class="form-group form-group-sm">
@@ -25,8 +25,9 @@
               <label for="passUser">Contraseña</label>
               <input type="password" class="form-control" name="passUser" placeholder="Contraseña de usuario" autocomplete="off">
             </div>
-            <button type="submit" class="btn btn-success btn-sm">Log In</button>
-            <button type="reset" class="btn btn-default btn-sm">Clear</button>
+            <!-- Muy Importante que los inputs sean de tipo "button" para evitar la recarga de la pagina -->           
+            <input type="button" id="btnLogin" class="btn btn-success btn-sm" value="Log In" data-toggle="modal" data-target="#infoModal">
+            <input type="reset" class="btn btn-default btn-sm" value=Clear>
           </form>
         </div>
       </div>
@@ -45,6 +46,24 @@
     </div>
   </nav>
   <main class="container-fluid">
+    
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="ModalLabel"></h4>
+            </div>
+            <div class="modal-body" id="ModalBody">
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <div class="container" id="ShopsMenu">
       <div class="row text-center">
 
@@ -70,6 +89,10 @@
     </div>
   </footer>
 </body>
+<!-- Scripts necesarios para bootstrap -->
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+
 <script src="../js/erp_err.js"></script>
 <script src="../js/erp_stroreHouse.js"></script>
 <script src="../js/erp_coords.js"></script>

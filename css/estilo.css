@@ -94,7 +94,6 @@ nav{
   justify-content: center;
 }
 
-
 #items{
   border-top:none;
 }
@@ -141,7 +140,16 @@ nav{
 .infoTienda{
   margin-left: 5px;
 }
+/*estilos para la ventana modal*/
+#headmodal{
+  font-variant: small-caps;
+  font-weight: bold;
+  color: green;
+}
 
+#headbody{
+  
+}
 /*estilos para el footer y sus elementos*/
 footer{
   text-align: center;
