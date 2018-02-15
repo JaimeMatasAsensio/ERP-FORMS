@@ -81,6 +81,19 @@ var IdModalBody = document.getElementById("ModalBody");
 
 //Funciones para el login y gestion de cookies
 
+function clearModal(){
+  var childModalHeader = IdModalHeader.children;
+  while(childModalHeader.length != 0){
+    IdModalHeader.removeChild(childModalHeader[0]);
+  }
+
+  var childModalBody = IdModalBody.children;
+  while(childModalBody.length != 0){
+    IdModalBody.removeChild(childModalBody[0]);
+  }
+}
+
+
 function checkLogIn()
 /*Funcion que comprueba que el login sea correco e inserta una cookie*/
 {
@@ -97,6 +110,7 @@ function checkLogIn()
     */
     
     //Creamos los valores para la cookie
+    
     var t = new Date();
     t.setTime(t.getTime() + (3*60*60*1000)); //tiene 3 horas de duracion
     var expira = "expires="+ t.toUTCString();
@@ -104,6 +118,9 @@ function checkLogIn()
     document.cookie = "idUser = " + usuario.IdUsuario + ";"+expira;
     document.cookie = "nameUser = " + usuario.nombre + ";"+expira;
     document.cookie = "passUser = true;"+expira;
+
+    //Borramos el contenido del modal
+    clearModal();
 
     //escribimos en el modal
     var header = document.createElement("h3");
