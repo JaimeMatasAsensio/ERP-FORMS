@@ -11,8 +11,24 @@
   <header class="container-fluid">
     <div class="container">
       <div class="row">
-        <img class="img-rounded col-md-4" id="logo" src="../imagenes/icon.png" alt="Icono ERP" title="Logo ERP">
-        <h1 class="col-md-8" id="cabeceraPractica">Practica Tema 5 ERP con DOM</h1>
+        <div class="col-md-2">
+          <img class="img-rounded col-md-2" id="logo" src="../imagenes/icon.png" alt="Icono ERP" title="Logo ERP">
+        </div>
+        <h1 class="col-md-7" id="cabeceraPractica">Practica Tema 7 ERP con DOM</h1>
+        <div class="col-md-3" id="formLogIn">
+          <form name="login" id="login" method="post">
+            <div class="form-group form-group-sm">
+              <label for="nameUser">Nombre Usuario</label>
+              <input type="text" class="form-control" name="nameUser" placeholder="Nombre de usuario" autocomplete="off">
+            </div>
+            <div class="form-group form-group-sm">
+              <label for="passUser">Contraseña</label>
+              <input type="password" class="form-control" name="passUser" placeholder="Contraseña de usuario" autocomplete="off">
+            </div>
+            <button type="submit" class="btn btn-success btn-sm">Log In</button>
+            <button type="reset" class="btn btn-default btn-sm">Clear</button>
+          </form>
+        </div>
       </div>
     </div>
   </header>
@@ -60,6 +76,7 @@
 <script src="../js/erp_category.js"></script>
 <script src="../js/erp_shop.js"></script>
 <script src="../js/erp_product.js"></script>
+<script src="../js/form_users.js"></script>
 <script src="../js/erp_init.js"></script>
 <script src="../js/bom_ProductWindows.js"></script>
 <script src="../js/dom_populate.js"></script>
