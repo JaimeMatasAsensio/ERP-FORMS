@@ -67,11 +67,12 @@ User.prototype.toString = function(){
   return "IdUser: "+this.IdUsuario+" .Nombre: "+this.nombre+". pass: "+this.pass;
 }
 
+
+
 //---Bloque funciones para comprobar el login, insertar y leer una cookie
-var usuario = new User("prueba","prueba");//instancia de prueba de un usuario
-var usuario1 = new User("Jaime","prueba");//instancia de prueba de un segundo usuario
 
 //Identificadores del formulario login
+var IdDivFormLogin = document.getElementById("formLogIn");
 var IdFormLogin = document.getElementById("login");
 var IdBtnLogIn = document.getElementById("btnLogin");
 
@@ -81,7 +82,48 @@ var IdModalBody = document.getElementById("ModalBody");
 
 //Funciones para el login y gestion de cookies
 
-function clearModal(){
+function clearLoginValues()
+/*Funcion que elimina el valor de los inputs del formulario de login*/
+{
+  IdFormLogin.elements.namedItem("passUser").value = "";
+  IdFormLogin.elements.namedItem("nameUser").value = "";
+}
+
+function checkLogIn()
+/*Funcion que comprueba que el login sea correco e inserta una cookie*/
+{
+  var userLoginName = IdFormLogin.elements.namedItem("nameUser").value;
+  var userLoginPass = IdFormLogin.elements.namedItem("passUser").value;
+  
+  var userLoged = Store.GetUserByName(userLoginName);
+  
+  if(!(userLoged instanceof User)){
+    WriteErrorLoginModal();
+  }else{
+    if(userLoged.pass != userLoginPass){
+      WriteErrorLoginModal();
+    }else{
+      //Creamos los valores que tendran las cookies
+      var t = new Date();
+      t.setTime(t.getTime() + (3*60*60*1000)); //tiene 3 horas de duracion
+      var expira = "expires="+ t.toUTCString();
+      var l = new Date();
+      document.cookie = "idUser = " + userLoged.IdUsuario + ";" + expira;
+      document.cookie = "nameUser = " + userLoged.nombre + ";" + expira;
+      document.cookie = "loginUser = " + l.toUTCString() + ";" + expira;
+      
+      WriteSuccessLoginModal(userLoged);
+    }
+  }
+  
+  clearLoginValues();
+}
+
+IdBtnLogIn.addEventListener("click", checkLogIn);
+
+function clearModal()
+/*Funcion que limpia el contenido de la ventana modal*/
+{
   var childModalHeader = IdModalHeader.children;
   while(childModalHeader.length != 0){
     IdModalHeader.removeChild(childModalHeader[0]);
@@ -93,67 +135,84 @@ function clearModal(){
   }
 }
 
-
-function checkLogIn()
-/*Funcion que comprueba que el login sea correco e inserta una cookie*/
+function WriteErrorLoginModal()
+/*Funcion que escribe un error de login en la ventana modal*/
 {
-
-  if(IdFormLogin.elements[0].value == usuario.nombre && IdFormLogin.elements.namedItem("passUser").value == usuario.pass){
-    
-    /* //Pruebas de las cookies
-    console.log("acceso por indice de elemento");
-    console.log("Nombre: " + IdFormLogin.elements[0].value);
-    console.log("Pass: " + IdFormLogin.elements[1].value);
-    console.log("acceso por nombre de input");
-    console.log("Nombre: " + IdFormLogin.elements.namedItem("nameUser").value);
-    console.log("Pass: " + IdFormLogin.elements.namedItem("passUser").value);
-    */
-    
-    //Creamos los valores para la cookie
-    
-    var t = new Date();
-    t.setTime(t.getTime() + (3*60*60*1000)); //tiene 3 horas de duracion
-    var expira = "expires="+ t.toUTCString();
-
-    document.cookie = "idUser = " + usuario.IdUsuario + ";"+expira;
-    document.cookie = "nameUser = " + usuario.nombre + ";"+expira;
-    document.cookie = "passUser = true;"+expira;
-
-    //Borramos el contenido del modal
-    clearModal();
-
-    //escribimos en el modal
-    var header = document.createElement("h3");
-    header.setAttribute("id","headmodal");
-    header.appendChild(document.createTextNode("Bienvenido"));
-    IdModalHeader.appendChild(header);
-
-    var divModal = document.createElement("div");
-    divModal.className = "text-center";
-    IdModalBody.appendChild(divModal);
-
-    var texto = document.createElement("p");
-    texto.className = "textomodal";
-    texto.appendChild(document.createTextNode(usuario.nombre));
-    divModal.appendChild(texto);
-
-    var texto1 = document.createElement("p");
-    texto1.className = "textomodal";
-    var d = new Date();
-    var fecha = d.toLocaleDateString() + " " + d.toLocaleTimeString();
-    texto1.appendChild(document.createTextNode(fecha));
-    divModal.appendChild(texto1);
-
-  }
-
+  //Borramos el contenido del modal
+  clearModal();
+  
+  //escribimos en el modal
+  var header = document.createElement("h3");
+  header.setAttribute("id","headmodal-error");
+  header.appendChild(document.createTextNode("Error!"));
+  IdModalHeader.appendChild(header);
+  
+  var divModal = document.createElement("div");
+  divModal.className = "text-center";
+  IdModalBody.appendChild(divModal);
+  
+  var texto = document.createElement("p");
+  texto.className = "textomodal-error";
+  texto.appendChild(document.createTextNode("Usuario o contraseña incorrectos!"));
+  divModal.appendChild(texto);
+  
+  var texto1 = document.createElement("p");
+  texto1.className = "textomodal";
+  var d = new Date();
+  var fecha = d.toLocaleDateString() + " " + d.toLocaleTimeString();
+  texto1.appendChild(document.createTextNode(fecha));
+  divModal.appendChild(texto1);
 }
 
-IdBtnLogIn.addEventListener("click", checkLogIn);
+function WriteSuccessLoginModal(usuario){
+  //Borramos el contenido del modal
+  clearModal();
+  
+  //escribimos en el modal
+  var header = document.createElement("h3");
+  header.setAttribute("id","headmodal");
+  header.appendChild(document.createTextNode("Bienvenido"));
+  IdModalHeader.appendChild(header);
 
-function givemeCookies(){
+  var divModal = document.createElement("div");
+  divModal.className = "text-center";
+  IdModalBody.appendChild(divModal);
+
+  var texto = document.createElement("p");
+  texto.className = "textomodal";
+  texto.appendChild(document.createTextNode(usuario.nombre));
+  divModal.appendChild(texto);
+
+  var texto1 = document.createElement("p");
+  texto1.className = "textomodal";
+  var d = new Date();
+  var fecha = d.toLocaleDateString() + " " + d.toLocaleTimeString();
+  texto1.appendChild(document.createTextNode(fecha));
+  divModal.appendChild(texto1);
+  
+}
+
+function UserLoged(arrayCookie){
+  var divRow = document.createElement("");
+  divRow.className = "row";
+
+  var divImgUser = document.createElement("");
+}
+
+
+
+//Funciones para obtener los valores de las cookies almacenadas
+function checkCookies(){
+  if(document.cookie){
+    var userLoged = giveMeCookies();
+
+  }
+}
+
+function giveMeCookies(){
   /*
   Las cookies se almacenan en el siguiente orden:
-  giveme = [idUser,nameUser,passUser];
+  giveme = [idUser,nameUser,loginUser];
   */
   var giveme = [];
   var cookies = document.cookie;

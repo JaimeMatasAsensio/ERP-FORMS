@@ -122,6 +122,30 @@ ProductNotExistInStore.prototype.toString = function(){
   return TemplateError.prototype.toString.call(this);
 }
 
+function NotAnObjectUser()
+/*Error lanzado cuando no se añade un objeto usuario al array _users*/
+{
+  this.name = "NotAnObjectUser.";
+  this.message = "This object isn`t a instace of User object...";
+}
+NotAnObjectUser.prototype = new TemplateError();
+NotAnObjectUser.prototype.constructor = NotAnObjectUser;
+NotAnObjectUser.prototype.toString = function(){
+  return TemplateError.prototype.toString.call(this);
+}
+
+function UserAlreadyRegistred(userObj)
+/*Error lanzado cuando el usuario que se va a añadir ya esta registrado*/
+{
+  this.name = "UserAlreadyRegistred.";
+  this.message = "The user, " + userObj.nombre + ", are registered on the system.";
+}
+UserAlreadyRegistred.prototype = new TemplateError();
+UserAlreadyRegistred.prototype.constructor = UserAlreadyRegistred;
+UserAlreadyRegistred.prototype.toString = function(){
+  return TemplateError.prototype.toString.call(this);
+}
+
 
 
 // Implementacion del StoreHouse como Singleton
@@ -138,6 +162,7 @@ var StoreHouse = (function(){
       var _category = []; // _category[0] = {CategoryObj}
       var _stock = []; //_stock[0] = {producto: ProductObj, cantidad: integer > 0, categoriaId: IdCategory}
       var _shops = []; // _shops[0] = {ShopObj}
+      var _users = []; // _users = {UserObj}
 
       // Getters  & Setters
       Object.defineProperty(this,"nombre",{
@@ -473,7 +498,51 @@ var StoreHouse = (function(){
 
       }
 
+      this.AddUser = function (userObj)
+      /*Metodo para añadir usuarios nuevos al array de usuarios*/
+      {
+        if(!(userObj instanceof User)) throw new NotAnObjectUser();
+        var finded = _users.find(function(element){
+          return (element.IdUsuario == userObj.IdUsuario);
+        });
+        if(finded){
+          throw new UserAlreadyRegistred(userObj);
+        }else{
+          _users.push(userObj);
+          return _users.length;
+        }
+      }
+
+      this.GetUserByName = function (userName)
+      /*Metodo para Obtener un usuario ya registrado*/
+      {
+        var index = _users.findIndex(function(element){
+          return (element.nombre == userName);
+        })
+        if(index < 0){
+          return false;
+        }else{
+         return _users[index];
+        }
+      }
+
+      //Iterador del array de usuarios
+      Object.defineProperty(this,"usersIte",{
+        get: function(){
+          var nextIndex = 0;
+          return{
+            next: function(){
+              return nextIndex < _users.length ? {value: _users[nextIndex++],done:false} : {done: true};
+            }
+          }
+        }
+      });
+
+
     }
+
+    
+
     StoreHouse.prototype = {};
     StoreHouse.prototype.constructor = StoreHouse;
 

@@ -139,7 +139,36 @@ function init()
   Store.AddShop(shop2);
   Store.AddShop(shop3);
 
-  //console.log(usuario.toString());
+  //Creamos las instancias de usuario
+  var user1 = new User("prueba","prueba");//instancia de prueba de un usuario
+  var user2 = new User("Jaime","123456789");//instancia de prueba de un segundo usuario
+
+  //Añadimos los usuarios al storeHouse
+  Store.AddUser(user1);
+  Store.AddUser(user2);
+
+
+  /*//Pruebas de los objetos usuario
+  try{
+  var aux = Store.GetUserByName("prueba");
+  console.log(aux.toString());
+  
+  aux = Store.GetUserByName("Jaime");
+  console.log(aux.toString());
+  
+  var iteUser = Store.usersIte;
+  var item = iteUser.next();
+  while(!item.done){
+    console.log(item.value.toString());
+    item = iteUser.next();
+  }
+
+  }catch(e){
+    console.log("Error: "+e.message);
+  }
+  */
+
+
 
   /*//iterador de las tiendas y de los productos de cada tienda;
   var iteStoreShops = Store.shopIte;
