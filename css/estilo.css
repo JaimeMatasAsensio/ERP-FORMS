@@ -162,6 +162,15 @@ nav{
   color: rgb(255, 6, 6);
 }
 
+/*Estilos para el formulario de login*/
+#imgUser{
+  width: 80px;
+  height: auto;
+  background-color: white;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
 /*estilos para el footer y sus elementos*/
 footer{
   text-align: center;

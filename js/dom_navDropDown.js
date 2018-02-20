@@ -55,9 +55,10 @@ function menuDropDown(liId)
           modificarCategoria.appendChild(document.createTextNode("Modificar Categoria"));
           divDrop.appendChild(modificarCategoria);
           
-          var añadirCategoria = document.createElement("a");
-          añadirCategoria.appendChild(document.createTextNode("Añadir Categoria"));
-          divDrop.appendChild(añadirCategoria);
+          var aniadirCategoria = document.createElement("a");
+          aniadirCategoria.appendChild(document.createTextNode("Añadir Categoria"));
+          divDrop.appendChild(aniadirCategoria);
+          aniadirCategoria.addEventListener("click",loadFormAddCategory);
           
           var eliminarCategoria = document.createElement("a");
           eliminarCategoria.appendChild(document.createTextNode("Eliminar Categoria"));

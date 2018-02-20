@@ -80,6 +80,10 @@ var IdBtnLogIn = document.getElementById("btnLogin");
 var IdModalHeader = document.getElementById("ModalLabel");
 var IdModalBody = document.getElementById("ModalBody");
 
+
+
+
+
 //Funciones para el login y gestion de cookies
 
 function clearLoginValues()
@@ -88,6 +92,16 @@ function clearLoginValues()
   IdFormLogin.elements.namedItem("passUser").value = "";
   IdFormLogin.elements.namedItem("nameUser").value = "";
 }
+
+function clearFormLogIn()
+/*Funcion para limpiar el contenido de la division que contiene el formulario de login */
+{
+  var allChilds = IdDivFormLogin.children;
+  while(allChilds.length > 0) {
+    IdDivFormLogin.removeChild(allChilds[0]);
+  }
+}
+
 
 function checkLogIn()
 /*Funcion que comprueba que el login sea correco e inserta una cookie*/
@@ -113,6 +127,8 @@ function checkLogIn()
       document.cookie = "loginUser = " + l.toUTCString() + ";" + expira;
       
       WriteSuccessLoginModal(userLoged);
+
+      checkCookies();
     }
   }
   
@@ -164,7 +180,9 @@ function WriteErrorLoginModal()
   divModal.appendChild(texto1);
 }
 
-function WriteSuccessLoginModal(usuario){
+function WriteSuccessLoginModal(usuario)
+/*Funcion que escribe los datos del usuario cuando hace logIn de forma correcta*/
+{
   //Borramos el contenido del modal
   clearModal();
   
@@ -192,11 +210,34 @@ function WriteSuccessLoginModal(usuario){
   
 }
 
-function UserLoged(arrayCookie){
-  var divRow = document.createElement("");
+function UserLoged(arrayCookie)
+/*Funcion que escribe los datos del usuario ya logueado en lugar del formulario*/
+{
+  var divRow = document.createElement("div");
   divRow.className = "row";
+  
+  var divImg = document.createElement("div");
+  divImg.className = "col-sm-4";
+  divRow.appendChild(divImg);
 
-  var divImgUser = document.createElement("");
+  var ImgUser = document.createElement("img");
+  ImgUser.setAttribute("src","../imagenes/user.png");
+  ImgUser.setAttribute("id","imgUser");
+  divImg.appendChild(ImgUser);
+
+  var divInfo = document.createElement("div");
+  divInfo.className = "col-sm-8 text-center";
+  divRow.appendChild(divInfo);
+
+  var pInfo1 = document.createElement("p");
+  pInfo1.appendChild(document.createTextNode("Usuario: " + arrayCookie[1]));
+  divInfo.appendChild(pInfo1)
+  
+  var pInfo2 = document.createElement("p");
+  pInfo2.appendChild(document.createTextNode(arrayCookie[2]));
+  divInfo.appendChild(pInfo2)
+
+  return divRow;
 }
 
 
@@ -204,8 +245,10 @@ function UserLoged(arrayCookie){
 //Funciones para obtener los valores de las cookies almacenadas
 function checkCookies(){
   if(document.cookie){
-    var userLoged = giveMeCookies();
-
+    var userCookies = giveMeCookies();
+    clearFormLogIn();
+    var info = UserLoged(userCookies);
+    IdDivFormLogin.appendChild(info);
   }
 }
 
@@ -242,3 +285,6 @@ function getCookie(cname)
   }
   return "";
 }
+
+
+document.onload = checkCookies();
