@@ -212,7 +212,7 @@ var StoreHouse = (function(){
         }
 
         this.RemoveCategory = function(IdCat)
-        /*Metodo para eliminar una categoria del array de categorias de la tienda, requiere el id de la categoria */
+        /*Metodo para eliminar una categoria del array de categorias del storeHouse, requiere el id de la categoria */
         {
           var i = _category.findIndex(function(element){
             return (element.IdCategory === IdCat)
@@ -247,7 +247,7 @@ var StoreHouse = (function(){
         */
 
         this.AddProduct = function(obj,cant,Idcat)
-        /*Metodo para insertar productos en el stock de tienda requiere un Id de categoria para relaccionar categoria y producto */
+        /*Metodo para insertar productos en el stock de storeHouse requiere un Id de categoria para relaccionar categoria y producto */
         {
           if(!(obj instanceof Product)) throw new NotAnObjectProduct();
           if(!(Number.isInteger(cant)) && cant < 0) throw new InvalidCuantitieValue(cant,"cantidad");

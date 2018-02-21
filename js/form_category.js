@@ -7,7 +7,7 @@ function loadFormAddCategory()
 {
   if(document.cookie){
     clearMainCont();
-    IdMainCont.appendChild(document.createTextNode("Acceso a formularios permitido!")); // en pruebas!
+    console.log("Acceso a formularios correcto!");
   }else{
     var message = "No tiene acceso a los formularios de 'Añadir Categoria'. Haga Log In...";
     WriteErrorModal(message);
