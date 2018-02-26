@@ -81,9 +81,6 @@ var IdModalHeader = document.getElementById("ModalLabel");
 var IdModalBody = document.getElementById("ModalBody");
 
 
-
-
-
 //Funciones para el login y gestion de cookies
 
 function clearLoginValues()
@@ -112,11 +109,17 @@ function checkLogIn()
   var userLoged = Store.GetUserByName(userLoginName);
   
   if(!(userLoged instanceof User)){
+    
     WriteErrorLoginModal();
+    
   }else{
     if(userLoged.pass != userLoginPass){
+      
       WriteErrorLoginModal();
+
     }else{
+      IdBtnLogIn.setAttribute("data-toggle","");
+      IdBtnLogIn.setAttribute("data-target","");
       //Creamos los valores que tendran las cookies
       var t = new Date();
       t.setTime(t.getTime() + (3*60*60*1000)); //tiene 3 horas de duracion
@@ -125,14 +128,16 @@ function checkLogIn()
       document.cookie = "idUser = " + userLoged.IdUsuario + ";" + expira;
       document.cookie = "nameUser = " + userLoged.nombre + ";" + expira;
       document.cookie = "loginUser = " + l.toUTCString() + ";" + expira;
-      
-      WriteSuccessLoginModal(userLoged);
 
       checkCookies();
     }
   }
   
   clearLoginValues();
+  /*
+  IdBtnLogIn.removeAttribute("data-toggle");
+  IdBtnLogIn.removeAttribute("data-target");
+  */
 }
 
 IdBtnLogIn.addEventListener("click", checkLogIn);
@@ -178,35 +183,7 @@ function WriteErrorLoginModal()
   var fecha = d.toLocaleDateString() + " " + d.toLocaleTimeString();
   texto1.appendChild(document.createTextNode(fecha));
   divModal.appendChild(texto1);
-}
 
-function WriteSuccessLoginModal(usuario)
-/*Funcion que escribe los datos del usuario cuando hace logIn de forma correcta*/
-{
-  //Borramos el contenido del modal
-  clearModal();
-  
-  //escribimos en el modal
-  var header = document.createElement("h3");
-  header.setAttribute("id","headmodal");
-  header.appendChild(document.createTextNode("Bienvenido"));
-  IdModalHeader.appendChild(header);
-
-  var divModal = document.createElement("div");
-  divModal.className = "text-center";
-  IdModalBody.appendChild(divModal);
-
-  var texto = document.createElement("p");
-  texto.className = "textomodal";
-  texto.appendChild(document.createTextNode(usuario.nombre));
-  divModal.appendChild(texto);
-
-  var texto1 = document.createElement("p");
-  texto1.className = "textomodal";
-  var d = new Date();
-  var fecha = d.toLocaleDateString() + " " + d.toLocaleTimeString();
-  texto1.appendChild(document.createTextNode(fecha));
-  divModal.appendChild(texto1);
   
 }
 

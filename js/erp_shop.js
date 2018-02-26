@@ -231,10 +231,23 @@ function Shop(cif,nombre,direccion,telefono,coords)
   }
   this.getCategory = function(IdCat){
     var i = _category.findIndex(function(element){
-      return (element.IdCategory === IdCat)
+      return (element.IdCategory == IdCat)
     });
     if(i != -1){
       return _category[i];
+    }else{
+      throw new CategoryNotExistInShop(IdCat,_nombre);
+    }
+  }
+
+  this.setCategory = function(IdCat,obj){
+    if(!(obj instanceof Category)) throw new NotAnObjectCategory();
+    var i = _category.findIndex(function(element){
+      return (element.IdCategory == IdCat)
+    });
+    if(i != -1){
+      _category[i].titulo = obj.titulo;
+      _category[i].descripcion = obj.descripcion;
     }else{
       throw new CategoryNotExistInShop(IdCat,_nombre);
     }

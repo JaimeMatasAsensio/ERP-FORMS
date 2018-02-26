@@ -3,11 +3,11 @@
 
 //Bloque de Errores Para los objetos Category
 
-function InvalidTitleValue(param)
+function InvalidTitleValue()
 /*Error lanzado cuando el valor de titulo no es valido*/
 {
   this.name = "InvalidTitleValue.";
-  this.message = "This '"+param+"' is a invalid title value.";
+  this.message = "The value of this title must be full";
 }
 InvalidTitleValue.prototype = new TemplateError();
 InvalidTitleValue.prototype.constructor = InvalidTitleValue;
@@ -16,11 +16,11 @@ InvalidTitleValue.prototype.toString = function(){
 }
 
 
-function InvalidDescriptionValue(param)
+function InvalidDescriptionValue()
 /*Error lanzado cuando el valor de la descripcion no es valido */
 {
   this.name = "InvalidDescriptionValue.";
-  this.message = "This '"+param+"' is a invalid description value.";
+  this.message = "Empty description value.";
 }
 InvalidDescriptionValue.prototype = new TemplateError();
 InvalidDescriptionValue.prototype.constructor = InvalidDescriptionValue;
@@ -42,8 +42,8 @@ function Category(titulo, descripcion){
   if(!(this instanceof Category)) throw new ConstructorCalledFunction();
 
   //Validacion de inputs
-  if(!titulo) throw new InvalidTitleValue(titulo);
-  if((typeof descripcion) != "string") throw new InvalidDescriptionValue(descripcion);
+  if(!titulo) throw new InvalidTitleValue();
+  if(!descripcion) throw new InvalidDescriptionValue(descripcion);
 
   //Parmetros privados
   var _IdCategory = IdCategory();
@@ -57,7 +57,7 @@ function Category(titulo, descripcion){
   Object.defineProperty(this,"titulo",{
     get: function(){return _titulo},
     set: function(NewTitulo){
-      if(!NewTitulo) throw new InvalidTitleValue(NewTitulo);
+      if(!NewTitulo) throw new InvalidTitleValue();
       _titulo = NewTitulo;
     }
   });

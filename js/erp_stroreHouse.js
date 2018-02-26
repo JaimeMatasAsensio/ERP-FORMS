@@ -66,7 +66,7 @@ function ShopNotExistInStore(cifShop,storeName)
 /*Error lanzado cuando no existe la tienda dentro del array de tiendas*/
 {
   this.name = "ShopNotExistInStore.";
-  this.message = "This category, '"+cifShop+"', not exist in store house '"+storeName+"'.";
+  this.message = "This Shop with cif value equal to '"+cifShop+"', not exist in store house '"+storeName+"'.";
 }
 ShopNotExistInStore.prototype = new TemplateError();
 ShopNotExistInStore.prototype.constructor = ShopNotExistInStore;
@@ -200,22 +200,52 @@ var StoreHouse = (function(){
 
         }
 
+        this.AddCategoryInShop = function (cifShop,obj)
+        /*Funcion para añadir una categoria a una tienda dentro del storeHouse */
+        {
+          if(!(obj instanceof Category)) throw new NotAnObjectCategory();
+          
+          var index = _shops.findIndex(function(element){
+            return cifShop == element.cif;
+          });
+
+          if(index != -1){
+            _shops[index].AddCategory(obj);
+          }else{
+            throw new ShopNotExistInStore(cifShop,_nombreStore);
+          }
+        }
+
         this.getCategory = function(IdCat){
           var i = _category.findIndex(function(element){
-            return (element.IdCategory === IdCat)
+            return (element.IdCategory == IdCat)
           });
           if(i != -1){
             return _category[i];
           }else{
+            throw new CategoryNotExistInStore(IdCat,_nombreStore);
+          }
+        }
+
+        this.setCategory = function(IdCat,obj){
+          if(!(obj instanceof Category)) throw new NotAnObjectCategory();
+          var i = _category.findIndex(function(element){
+            return (element.IdCategory == IdCat)
+          });
+          if(i != -1){
+            _category[i].titulo = obj.titulo;
+            _category[i].descripcion = obj.descripcion;
+          }else{
             throw new CategoryNotExistInShop(IdCat,_nombre);
           }
         }
+      
 
         this.RemoveCategory = function(IdCat)
         /*Metodo para eliminar una categoria del array de categorias del storeHouse, requiere el id de la categoria */
         {
           var i = _category.findIndex(function(element){
-            return (element.IdCategory === IdCat)
+            return (element.IdCategory == IdCat)
           });
 
           if(i != -1){
@@ -382,6 +412,19 @@ var StoreHouse = (function(){
         }
       }
 
+      this.getShopByCif = function(cifShop)
+      /*Metodo que devuelve una tienda por cif de la tienda */
+      {
+        var index = _shops.findIndex(function(element){
+          return element.cif == cifShop;
+        })
+        if(index != -1){
+          return _shops[index];
+        }else{
+          throw new ShopNotExistInStore(cifShop,_nombreStore)
+        }
+      };
+
       this.AddProductInShop = function(cifShop,obj,cant,category)
       /*Metodo para añadir productos al stock de una tienda, requiere el cif de la tienda*/
       {
@@ -430,7 +473,28 @@ var StoreHouse = (function(){
           }
         }
       });
+      this.getCategoryFromShop = function(cifShop,idCat){
+        var index = _shops.findIndex(function(element){
+          return element.cif == cifShop;
+        });
 
+        if(index != -1){
+          return _shops[index].getCategory(idCat);
+        }else{
+          throw new ShopNotExistInStore(cifShop,_nombreStore)
+        }
+      }
+      this.setCategoryInShop = function(cifShop,idCat,obj){
+        if(!(obj instanceof Category)) throw new NotAnObjectCategory();
+        var index = _shops.findIndex(function(element){
+          return element.cif == cifShop;
+        })
+        if(index != -1){
+          _shops[index].setCategory(idCat,obj);
+        }else{
+          throw new ShopNotExistInStore(cifShop,_nombreStore)
+        }
+      }
       this.getShopProducts = function(cifShop)
       /*Metodo para obtener el iterador de productos de shop*/
       {

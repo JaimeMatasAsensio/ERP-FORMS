@@ -29,7 +29,7 @@ function menuDropDown(liId)
       divDrop.className = "drop-cont";
       divDrop.setAttribute("id","drop");
       liId.appendChild(divDrop);
-
+      divDrop.style.display = "block";
       unfoldingDiv(divDrop);
 
       switch (liId.id) {
@@ -55,9 +55,22 @@ function menuDropDown(liId)
           modificarCategoria.appendChild(document.createTextNode("Modificar Categoria"));
           divDrop.appendChild(modificarCategoria);
           
+          if(!document.cookie){
+            modificarCategoria.setAttribute("data-toggle","modal");
+            modificarCategoria.setAttribute("data-target","#infoModal");  
+          }
+
+          modificarCategoria.addEventListener("click",loadFormUpdateCategory);
+
           var aniadirCategoria = document.createElement("a");
           aniadirCategoria.appendChild(document.createTextNode("Añadir Categoria"));
           divDrop.appendChild(aniadirCategoria);
+          
+          if(!document.cookie){
+            aniadirCategoria.setAttribute("data-toggle","modal");
+            aniadirCategoria.setAttribute("data-target","#infoModal");  
+          }
+
           aniadirCategoria.addEventListener("click",loadFormAddCategory);
           
           var eliminarCategoria = document.createElement("a");
@@ -93,6 +106,7 @@ function removeDrop()
 /*Funcion que remueve el menu desplegable mostrado */
 {
   var location = document.getElementById("drop");
+  location.style.display = "hidden";
   if(location){
     location.parentElement.removeChild(location);
   }
@@ -102,7 +116,7 @@ function removeDrop()
 function unfoldingDiv(divDrop){
 
   var id = setInterval(grow,10);
-  divDrop.style.display = "block";
+  
   function grow(){
     
     var height = divDrop.offsetHeight;
@@ -116,6 +130,9 @@ function unfoldingDiv(divDrop){
 
       height += 5; 
       divDrop.style.height = height + "px";
+    }
+    if(divDrop.style.display == "hidden"){
+      clearInterval(id);
     }
   }
 

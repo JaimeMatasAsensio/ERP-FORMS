@@ -1,5 +1,8 @@
 # ERP-FORMS  
     
+## Version 0.0.2  
+Implementacion de las distinas funciones para generar elementos de formulario  
+  
 ## Version 0.0.1  
 Implementacion del objeto usuario. Se usara para comprobar la informacion introducida en el login de la pagina.  
 Si la informacion es correcta, se almacenara en una cookie y se dara acceso a los formularios.    

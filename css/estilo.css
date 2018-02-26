@@ -140,6 +140,21 @@ nav{
 .infoTienda{
   margin-left: 5px;
 }
+
+.formularios{
+
+  width: 80%;
+  margin: 10px auto;
+  padding: 10px 0px;
+  border-top: 2px solid rgba(3, 33, 55, 1);
+  border-bottom: 2px solid rgba(3, 33, 55, 1);
+}
+
+.btnForms{
+  display: flex;
+  justify-content: center;
+  align-content: space-between;
+}
 /*estilos para la ventana modal*/
 #headmodal{
   font-variant: small-caps;
