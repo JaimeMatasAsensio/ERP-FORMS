@@ -31,7 +31,7 @@ InvalidDescriptionValue.prototype.toString = function(){
 //--- Bloque del Constructor Category
 
 var IdCategory = (function (){
-  var IdCategory = 0;
+  var IdCategory = -1;
   return (function (){
     return ++IdCategory;
   })

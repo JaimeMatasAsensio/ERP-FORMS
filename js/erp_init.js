@@ -6,6 +6,7 @@ function init()
 /*Funcion que inicaliza todo el ERP, las tiendas que lo componen asi como los productos y las categorias*/
 {
   //Implementacion de los Objetos Categoria
+  var cat0 = new Category("General","Productos");
   var cat1 = new Category("Comunicacion","Telefonos moviles, Fijos, radios de onda corta, radios de onda larga y todo tipo de equipos relacionados con la comunicacion.");
   var cat2 = new Category("Imagen","Equipos fotograficos, grabacion de Video y todo tipo de equipos relacionados con la Imagen.");
   var cat3 = new Category("VideoConsolas","Videoconsolas fijas o portatiles, mandos y complementos.");
@@ -106,6 +107,7 @@ function init()
   console.log("Nombre del Store House: "+Store.nombre);
   */
 
+  Store.AddCategory(cat0);
   Store.AddCategory(cat1);
   Store.AddCategory(cat2);
   Store.AddCategory(cat3);

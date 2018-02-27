@@ -261,7 +261,10 @@ function GenerateFormModifyCat(fieldSet)
         fields.appendChild(GenerateInputTextreadOnly("idCategoria","Identificador Categoria",objCat.IdCategory));
         fields.appendChild(GenerateInputText("tituloCategoria","Titulo Categoria",objCat.titulo));
         fields.appendChild(GenerateTextarea("descrCategoria","Descripcion Categoria","",objCat.descripcion));
-        fields.appendChild(GenerateSubmitButtons(checkModCategory,"Modificar Categoria"));
+        //Si la categoria tiene el id 0, la categoria general, no se cargaran los botones de modificar para evitar tocar esta categoria
+        if(objCat.IdCategory){
+          fields.appendChild(GenerateSubmitButtons(checkModCategory,"Modificar Categoria"));
+        }
 
       }else{
         while (inputs.length > 3) {
@@ -271,7 +274,9 @@ function GenerateFormModifyCat(fieldSet)
         fields.appendChild(GenerateInputTextreadOnly("idCategoria","Identificador Categoria",objCat.IdCategory));
         fields.appendChild(GenerateInputText("tituloCategoria","Titulo Categoria",objCat.titulo));
         fields.appendChild(GenerateTextarea("descrCategoria","Descripcion Categoria","",objCat.descripcion));
-        fields.appendChild(GenerateSubmitButtons(checkModCategory,"Modificar Categoria"));
+        if(objCat.IdCategory){
+          fields.appendChild(GenerateSubmitButtons(checkModCategory,"Modificar Categoria"));
+        }
       }
       
 
