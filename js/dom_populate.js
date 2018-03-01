@@ -349,11 +349,13 @@ function menuCategoryShopPopulate(shop)
   var catIte = shop.categoryIte;
   var category = catIte.next();
   while(!category.done){
-    var liCategory = document.createElement("li");
-    liCategory.className = "list-group-item";
-    liCategory.appendChild(document.createTextNode(category.value.titulo));
-    menuCategory.appendChild(liCategory);
-    liCategory.addEventListener("click",productCategoryShopPopulate(shop,category.value.IdCategory));
+    if(category.value.IdCategory != "0"){//La categoria general no aparece en la lista
+      var liCategory = document.createElement("li");
+      liCategory.className = "list-group-item";
+      liCategory.appendChild(document.createTextNode(category.value.titulo));
+      menuCategory.appendChild(liCategory);
+      liCategory.addEventListener("click",productCategoryShopPopulate(shop,category.value.IdCategory));
+    }
     category = catIte.next();
   }
   return menuCategory;

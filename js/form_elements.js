@@ -108,6 +108,41 @@ function GenerateTextarea(nameInput,labelText,placeholderText,valueInput)
 
 }
 
+function GenerateTextareaReadOnly(nameInput,labelText,placeholderText,valueInput)
+/*Obtenemos un textarea*/
+{
+  var value = valueInput||"";
+  var divFormGroup = document.createElement("div");
+  divFormGroup.className = "form-group";
+
+  var labelInput = document.createElement("label");
+  labelInput.className = "col-sm-3 control-label";
+  labelInput.setAttribute("for",nameInput);
+  labelInput.appendChild(document.createTextNode(labelText));
+  divFormGroup.appendChild(labelInput);
+
+  var div = document.createElement("div");
+  div.className = "col-sm-9";
+  div.style.minHeight = "100px";
+  divFormGroup.appendChild(div);
+
+  var input = document.createElement("textarea");
+  input.className = "form-control";
+  input.setAttribute("name",nameInput);
+  input.setAttribute("readonly","true");
+  input.setAttribute("type","text");
+  
+  if(valueInput != ""){
+    input.appendChild(document.createTextNode(valueInput));
+  }
+ 
+  input.setAttribute("placeholder",placeholderText);
+  div.appendChild(input);
+  
+  return divFormGroup;
+
+}
+
 function GenerateInputTextreadOnly(nameInput,labelText,valueInput)
 /*Obtenemos un input de tipo texto*/
 {

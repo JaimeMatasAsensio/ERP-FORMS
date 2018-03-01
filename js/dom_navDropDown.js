@@ -76,7 +76,15 @@ function menuDropDown(liId)
           var eliminarCategoria = document.createElement("a");
           eliminarCategoria.appendChild(document.createTextNode("Eliminar Categoria"));
           divDrop.appendChild(eliminarCategoria);
-  
+          
+          if(!document.cookie){
+            eliminarCategoria.setAttribute("data-toggle","modal");
+            eliminarCategoria.setAttribute("data-target","#infoModal");  
+          }
+
+          eliminarCategoria.addEventListener("click",loadFormRemoveCategory);
+
+          
           break;
         
         case "navProductos":

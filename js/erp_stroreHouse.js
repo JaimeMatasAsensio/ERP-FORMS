@@ -216,7 +216,9 @@ var StoreHouse = (function(){
           }
         }
 
-        this.getCategory = function(IdCat){
+        this.getCategory = function(IdCat)
+        /*Metodo que devuelve un objeto categoria indicando su id*/
+        {
           var i = _category.findIndex(function(element){
             return (element.IdCategory == IdCat)
           });
@@ -227,7 +229,9 @@ var StoreHouse = (function(){
           }
         }
 
-        this.setCategory = function(IdCat,obj){
+        this.setCategory = function(IdCat,obj)
+        /*Metodo que modifica una categoria, necesario el id de la categoria a modificar y un objeto categoria con los nuevos valores */
+        {
           if(!(obj instanceof Category)) throw new NotAnObjectCategory();
           var i = _category.findIndex(function(element){
             return (element.IdCategory == IdCat)

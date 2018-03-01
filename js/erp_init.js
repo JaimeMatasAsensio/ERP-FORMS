@@ -66,6 +66,7 @@ function init()
 
   //Añadimos productos a las tiendas
 
+  shop1.AddCategory(cat0);
   shop1.AddCategory(cat1);
   shop1.AddProduct(pro1,10,1);
   shop1.AddProduct(pro2,15,1);
@@ -79,10 +80,12 @@ function init()
   }
   */
 
+  shop2.AddCategory(cat0);
   shop2.AddCategory(cat2);
   shop2.AddProduct(pro3,4,2);
   shop2.AddProduct(pro4,3,2);
 
+  shop3.AddCategory(cat0);
   shop3.AddCategory(cat1);
   shop3.AddCategory(cat2);
   shop3.AddCategory(cat3);

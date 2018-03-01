@@ -138,6 +138,29 @@ function loadFormUpdateCategory()
   }
 }
 
+function loadFormRemoveCategory(){
+  if(document.cookie){ 
+    clearForm();
+    clearMainCont();
+    FormCategory.className = "form-horizontal formularios";
+    IdMainCont.appendChild(FormCategory);
+
+    var fieldsetUpdateCategory = document.createElement("fieldset");
+    FormCategory.appendChild(fieldsetUpdateCategory);
+
+    var legendUpdateCategory = document.createElement("legend");
+    legendUpdateCategory.appendChild(document.createTextNode("Eliminar categoria"));
+    fieldsetUpdateCategory.appendChild(legendUpdateCategory);
+
+    var selectShop = GenerateInputSelectForShops(Store.shopIte,"removeTarget","Eliminar Categoria En")
+    fieldsetUpdateCategory.appendChild(selectShop);
+    selectShop.addEventListener("change",OnchageInputSelectRemove(fieldsetUpdateCategory));
+
+  }else{
+    var message = "No tiene acceso a los formularios de 'Modificar Categoria'. Haga Log In...";
+    WriteErrorModal(message);
+  }
+}
 
 function GenerateInputSelectForCategories(categoryIte,nameInput,labeltext)
 /*funcion que genera un select con las categorias mediante un iterador*/
@@ -218,7 +241,46 @@ function OnchangeInputSelect(fieldSet)
   }
 }
 
-
+function OnchageInputSelectRemove(fieldSet){
+  var fieldSet = fieldSet;
+  return function(){
+    
+    var idShop = FormCategory.elements.namedItem("removeTarget").value;
+    var inputs = fieldSet.children;
+    while (inputs.length > 2) {
+      fieldSet.removeChild(inputs[inputs.length - 1]);
+    }
+    if(idShop != "store"){
+      var sel = document.getElementById("selForCat");
+      if(sel != null){
+        fieldSet.removeChild(sel);
+      }
+      try {
+        var shop = Store.getShopByCif(idShop);
+        var ite = shop.categoryIte;
+        var divShop = GenerateInputSelectForCategories(ite,"categoryTarget","Seleccionar una Categoria");
+        fieldSet.appendChild(divShop);
+        var select = divShop.getElementsByTagName("select")
+        select[0].focus();
+        select[0].addEventListener("change", GenerateFormRemove(fieldSet));
+      } catch (error) {
+        console.log(error.message);
+      }
+    }else{
+      var sel = document.getElementById("selForCat");
+      if(sel != null){
+        fieldSet.removeChild(sel);
+      }
+      var ite = Store.categoryIte;
+      var divShop = GenerateInputSelectForCategories(ite,"categoryTarget","Seleccionar una Categoria")
+      fieldSet.appendChild(divShop);
+      var select = divShop.getElementsByTagName("select")
+      select[0].addEventListener("change", GenerateFormRemove(fieldSet));
+    }
+    
+    
+  }
+}
 function GenerateFormModifyCat(fieldSet)
 /*Funcion que genera un formulario de modificacion de categoria*/
 {
@@ -237,7 +299,9 @@ function GenerateFormModifyCat(fieldSet)
         fields.appendChild(GenerateInputTextreadOnly("idCategoria","Identificador Categoria",objCat.IdCategory));
         fields.appendChild(GenerateInputText("tituloCategoria","Titulo Categoria",objCat.titulo));
         fields.appendChild(GenerateTextarea("descrCategoria","Descripcion Categoria","",objCat.descripcion));
-        fields.appendChild(GenerateSubmitButtons(checkModCategory,"Modificar Categoria"));
+        if(objCat.IdCategory){
+          fields.appendChild(GenerateSubmitButtons(checkModCategory,"Modificar Categoria"));
+        }
 
       }else{
         while (inputs.length > 3) {
@@ -247,7 +311,9 @@ function GenerateFormModifyCat(fieldSet)
         fields.appendChild(GenerateInputTextreadOnly("idCategoria","Identificador Categoria",objCat.IdCategory));
         fields.appendChild(GenerateInputText("tituloCategoria","Titulo Categoria",objCat.titulo));
         fields.appendChild(GenerateTextarea("descrCategoria","Descripcion Categoria","",objCat.descripcion));
-        fields.appendChild(GenerateSubmitButtons(checkModCategory,"Modificar Categoria"));
+        if(objCat.IdCategory){
+          fields.appendChild(GenerateSubmitButtons(checkModCategory,"Modificar Categoria"));
+        }
       }
 
     }else{
@@ -284,6 +350,79 @@ function GenerateFormModifyCat(fieldSet)
   }
 }
 
+function GenerateFormRemove(fieldSet){
+  var fields = fieldSet;
+  return function(){
+    var idShop = FormCategory.elements.namedItem("removeTarget").value;
+    var idCat = FormCategory.elements.namedItem("categoryTarget").value;
+    if(idShop != "store"){
+      var shop = Store.getShopByCif(idShop);
+      var objCat = shop.getCategory(idCat);
+      
+      var inputs = fields.children;
+      
+      if(inputs.length == 3){
+        fields.appendChild(GenerateInputTextreadOnly("idCategoria","Identificador Categoria",objCat.IdCategory));
+        fields.appendChild(GenerateInputTextreadOnly("tituloCategoria","Titulo Categoria",objCat.titulo));
+        fields.appendChild(GenerateTextareaReadOnly("descrCategoria","Descripcion Categoria","",objCat.descripcion));
+        fields.appendChild(GenerateSubmitButtons(checkRemoveCategory,"Eliminar Categoria"));
+
+      }else{
+        while (inputs.length > 3) {
+          fields.removeChild(inputs[inputs.length - 1]);
+        }
+        fields.appendChild(GenerateInputTextreadOnly("idCategoria","Identificador Categoria",objCat.IdCategory));
+        fields.appendChild(GenerateInputTextreadOnly("tituloCategoria","Titulo Categoria",objCat.titulo));
+        fields.appendChild(GenerateTextareaReadOnly("descrCategoria","Descripcion Categoria","",objCat.descripcion));
+        fields.appendChild(GenerateSubmitButtons(checkRemoveCategory,"Eliminar Categoria"));
+      }
+
+    }else{
+      
+      var objCat = Store.getCategory(idCat);
+      
+      var inputs = fields.children;
+
+      if(inputs.length == 3){
+
+        fields.appendChild(GenerateInputTextreadOnly("idCategoria","Identificador Categoria",objCat.IdCategory));
+        fields.appendChild(GenerateInputTextreadOnly("tituloCategoria","Titulo Categoria",objCat.titulo));
+        fields.appendChild(GenerateTextareaReadOnly("descrCategoria","Descripcion Categoria","",objCat.descripcion));
+        //Si la categoria tiene el id 0, la categoria general, no se cargaran los botones de modificar para evitar tocar esta categoria
+        if(objCat.IdCategory){
+          fields.appendChild(GenerateSubmitButtons(checkRemoveCategory,"Elimnar Categoria"));
+        }
+
+      }else{
+        while (inputs.length > 3) {
+          fields.removeChild(inputs[inputs.length - 1]);
+        }
+
+        fields.appendChild(GenerateInputTextreadOnly("idCategoria","Identificador Categoria",objCat.IdCategory));
+        fields.appendChild(GenerateInputTextreadOnly("tituloCategoria","Titulo Categoria",objCat.titulo));
+        fields.appendChild(GenerateTextareaReadOnly("descrCategoria","Descripcion Categoria","",objCat.descripcion));
+        if(objCat.IdCategory){
+          fields.appendChild(GenerateSubmitButtons(checkRemoveCategory,"Elimnar Categoria"));
+        }
+      }
+      
+
+    }
+  }
+}
+
+function checkRemoveCategory(){
+  clearModal();
+  var destino = FormCategory.elements.namedItem("removeTarget").value;
+  var catTarget = FormCategory.elements.namedItem("idCategoria").value;
+  
+  try {
+    console.log("Borrando la categoria!")
+    /**/
+  } catch (e) {
+    WriteErrorModal(e.message);
+  }
+}
 
 function checkModCategory(){
   clearModal();
