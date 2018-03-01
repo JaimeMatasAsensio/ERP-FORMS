@@ -98,7 +98,7 @@ function GenerateTextarea(nameInput,labelText,placeholderText,valueInput)
   input.setAttribute("type","text");
   
   if(valueInput != ""){
-    input.appendChild(document.createTextNode(valueInput));
+    input.appendChild(document.createTextNode(value));
   }
  
   input.setAttribute("placeholder",placeholderText);

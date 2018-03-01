@@ -138,7 +138,9 @@ function loadFormUpdateCategory()
   }
 }
 
-function loadFormRemoveCategory(){
+function loadFormRemoveCategory()
+/*Funcion que carga el formulario de eliminar categoria bien para una tienda o el store */
+{
   if(document.cookie){ 
     clearForm();
     clearMainCont();
@@ -241,7 +243,9 @@ function OnchangeInputSelect(fieldSet)
   }
 }
 
-function OnchageInputSelectRemove(fieldSet){
+function OnchageInputSelectRemove(fieldSet)
+/*Funcion de evento para cargar el formulario de eleminacion de categoria */
+{
   var fieldSet = fieldSet;
   return function(){
     
@@ -350,7 +354,9 @@ function GenerateFormModifyCat(fieldSet)
   }
 }
 
-function GenerateFormRemove(fieldSet){
+function GenerateFormRemove(fieldSet)
+/*Funcion que genera un formulario para remover una categoria*/
+{
   var fields = fieldSet;
   return function(){
     var idShop = FormCategory.elements.namedItem("removeTarget").value;
@@ -365,8 +371,9 @@ function GenerateFormRemove(fieldSet){
         fields.appendChild(GenerateInputTextreadOnly("idCategoria","Identificador Categoria",objCat.IdCategory));
         fields.appendChild(GenerateInputTextreadOnly("tituloCategoria","Titulo Categoria",objCat.titulo));
         fields.appendChild(GenerateTextareaReadOnly("descrCategoria","Descripcion Categoria","",objCat.descripcion));
-        fields.appendChild(GenerateSubmitButtons(checkRemoveCategory,"Eliminar Categoria"));
-
+        if(objCat.IdCategory){
+          fields.appendChild(GenerateSubmitButtons(checkRemoveCategory,"Eliminar Categoria"));
+        }
       }else{
         while (inputs.length > 3) {
           fields.removeChild(inputs[inputs.length - 1]);
@@ -374,7 +381,9 @@ function GenerateFormRemove(fieldSet){
         fields.appendChild(GenerateInputTextreadOnly("idCategoria","Identificador Categoria",objCat.IdCategory));
         fields.appendChild(GenerateInputTextreadOnly("tituloCategoria","Titulo Categoria",objCat.titulo));
         fields.appendChild(GenerateTextareaReadOnly("descrCategoria","Descripcion Categoria","",objCat.descripcion));
-        fields.appendChild(GenerateSubmitButtons(checkRemoveCategory,"Eliminar Categoria"));
+        if(objCat.IdCategory){
+          fields.appendChild(GenerateSubmitButtons(checkRemoveCategory,"Eliminar Categoria"));
+        }
       }
 
     }else{
@@ -390,6 +399,19 @@ function GenerateFormRemove(fieldSet){
         fields.appendChild(GenerateTextareaReadOnly("descrCategoria","Descripcion Categoria","",objCat.descripcion));
         //Si la categoria tiene el id 0, la categoria general, no se cargaran los botones de modificar para evitar tocar esta categoria
         if(objCat.IdCategory){
+          var simbol = document.createElement("span");
+          simbol.className = "glyphicon glyphicon-warning-sign";
+          simbol.style.display = "block";
+          simbol.style.textAlign = "center";
+          simbol.style.color = "red";
+          simbol.style.fontSize = "3rem";
+          fields.appendChild(simbol);
+
+          var aviso = document.createElement("h4");
+          aviso.appendChild(document.createTextNode("Elimniar categorias en el Store House, "+Store.nombre+", eliminara la categoria '"+objCat.titulo+"' de todas las tiendas que la posean y asignara la categoria de GENERAL a los productos de la categoria eliminada"));
+          aviso.style.textAlign = "center";
+          aviso.style.color = "red" ;
+          fields.appendChild(aviso);
           fields.appendChild(GenerateSubmitButtons(checkRemoveCategory,"Elimnar Categoria"));
         }
 
@@ -402,6 +424,19 @@ function GenerateFormRemove(fieldSet){
         fields.appendChild(GenerateInputTextreadOnly("tituloCategoria","Titulo Categoria",objCat.titulo));
         fields.appendChild(GenerateTextareaReadOnly("descrCategoria","Descripcion Categoria","",objCat.descripcion));
         if(objCat.IdCategory){
+          var simbol = document.createElement("span");
+          simbol.className = "glyphicon glyphicon-warning-sign";
+          simbol.style.display = "block";
+          simbol.style.textAlign = "center";
+          simbol.style.color = "red";
+          simbol.style.fontSize = "3rem";
+          fields.appendChild(simbol);
+
+          var aviso = document.createElement("h4");
+          aviso.appendChild(document.createTextNode("Elimniar categorias en el Store House, "+Store.nombre+", eliminara la categoria '"+objCat.titulo+"' de todas las tiendas que la posean y asignara la categoria de GENERAL a los productos de la categoria eliminada"));
+          aviso.style.textAlign = "center";
+          aviso.style.color = "red";
+          fields.appendChild(aviso);
           fields.appendChild(GenerateSubmitButtons(checkRemoveCategory,"Elimnar Categoria"));
         }
       }
@@ -411,14 +446,46 @@ function GenerateFormRemove(fieldSet){
   }
 }
 
-function checkRemoveCategory(){
+function checkRemoveCategory()
+/*Funcion que elimina una categoria del store house o de una tienda*/
+{
   clearModal();
   var destino = FormCategory.elements.namedItem("removeTarget").value;
   var catTarget = FormCategory.elements.namedItem("idCategoria").value;
+  var catTitleTarget = FormCategory.elements.namedItem("tituloCategoria").value;
   
   try {
-    console.log("Borrando la categoria!")
-    /**/
+    if(destino == "store"){
+      console.log(destino + " ; " + catTarget);
+      var removed = Store.setCategoryProduct(catTarget,0);
+      while(removed == true){
+        removed = Store.setCategoryProduct(catTarget,0);
+      }
+      Store.RemoveCategory(catTarget);
+      var ite = Store.shopIte;
+      var shop = ite.next();
+      while(!shop.done){
+        var removeShop = Store.setCategoryProductInShop(shop.value.cif,catTarget,0);
+        while(removeShop == true){
+          removeShop = Store.setCategoryProductInShop(shop.value.cif,catTarget,0);
+        }
+        shop.value.RemoveCategory(catTarget);
+        shop = ite.next();
+      }
+      WriteSuccessModal("Categoria Eliminada con exito!","La categoria "+ catTitleTarget + "Ha sido eliminada de todo el Store House "+Store.nombre);
+      loadFormRemoveCategory();
+    }else{
+      console.log(destino + " ; " + catTarget);
+      var removeShop = Store.setCategoryProductInShop(destino,catTarget,0);
+      while(removeShop == true){
+        removeShop = Store.setCategoryProductInShop(destino,catTarget,0);
+      }
+      Store.RemoveCategoryFromShop(destino,catTarget);
+      var shop = Store.getShopByCif(destino);
+      WriteSuccessModal("Categoria Eliminada con exito!","La categoria "+ catTitleTarget + "Ha sido eliminada de la tienda "+shop.nombre);
+      loadFormRemoveCategory();
+    }
+    
   } catch (e) {
     WriteErrorModal(e.message);
   }

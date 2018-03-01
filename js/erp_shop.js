@@ -217,14 +217,12 @@ function Shop(cif,nombre,direccion,telefono,coords)
   /*Metodo para eliminar uan categoria del array de categorias de la tienda, requiere el id de la categoria */
   {
     var i = _category.findIndex(function(element){
-      return (element.IdCategory === IdCat)
+      return (element.IdCategory == IdCat)
     });
 
     if(i != -1){
       _category.splice(i,1);
       return _category.length;
-    }else{
-      throw new CategoryNotExistInShop(IdCat,_nombre);
     }
 
 
@@ -349,7 +347,19 @@ function Shop(cif,nombre,direccion,telefono,coords)
       }
 
     }
-
+    this.setCategoryProduct = function(oldIdCat,newIdCat)
+    /*Metodo que modifica la categoria de un producto, sustituye el identificador*/
+    {
+      var index = _stock.findIndex(function(element){
+        return element.categoriaId == oldIdCat;
+      });
+      if(index != -1){
+        _stock[index].categoriaId = newIdCat;
+        return true;
+      }else{
+        return false;
+      }
+    }
    //Iterador de los objetos contenidos en _stock
    /*
     Ejemplo de un valor de _stock

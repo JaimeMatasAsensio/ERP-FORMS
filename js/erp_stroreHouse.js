@@ -255,8 +255,6 @@ var StoreHouse = (function(){
           if(i != -1){
             _category.splice(i,1);
             return _category.length;
-          }else{
-            throw new CategoryNotExistInStore(IdCat,_nombreStore);
           }
 
 
@@ -273,6 +271,31 @@ var StoreHouse = (function(){
             }
           }
         });
+
+        this.setCategoryProduct = function(oldIdCat,newIdCat)
+        /*Metodo que modifica la categoria de un producto, sustituye el identificador*/
+        {
+          var index = _stock.findIndex(function(element){
+            return element.categoriaId == oldIdCat;
+          });
+          if(index != -1){
+            _stock[index].categoriaId = newIdCat;
+            return true;
+          }else{
+            return false;
+          }
+        }
+
+        this.setCategoryProductInShop = function(cifShop,oldIdCat,newIdCat)
+        /*Metodo que modifica la categoria de un producto, sustituye el identificador*/
+        {
+          var index = _shops.findIndex(function(element){
+            return element.cif == cifShop;
+          });
+          if(index != -1){
+            return _shops[index].setCategoryProduct(oldIdCat,newIdCat);
+          }
+        }
 
         //Metodos para controlar _stock = []
         /*
@@ -477,7 +500,10 @@ var StoreHouse = (function(){
           }
         }
       });
-      this.getCategoryFromShop = function(cifShop,idCat){
+
+      this.getCategoryFromShop = function(cifShop,idCat)
+      /*Metodo para obtener la categoria de una tienda*/
+      {
         var index = _shops.findIndex(function(element){
           return element.cif == cifShop;
         });
@@ -488,7 +514,9 @@ var StoreHouse = (function(){
           throw new ShopNotExistInStore(cifShop,_nombreStore)
         }
       }
-      this.setCategoryInShop = function(cifShop,idCat,obj){
+      this.setCategoryInShop = function(cifShop,idCat,obj)
+      /*Metodo para modificar una categoria de una tienda*/
+      {
         if(!(obj instanceof Category)) throw new NotAnObjectCategory();
         var index = _shops.findIndex(function(element){
           return element.cif == cifShop;
@@ -499,6 +527,24 @@ var StoreHouse = (function(){
           throw new ShopNotExistInStore(cifShop,_nombreStore)
         }
       }
+
+      this.RemoveCategoryFromShop = function(cifShop,IdCat)
+      /*Metodo para eliminar una categoria del array de categorias de una tienda*/
+      {
+        var i = _shops.findIndex(function(element){
+          return (element.cif == cifShop)
+        });
+
+        if(i != -1){
+          _shops[i].RemoveCategory(IdCat);
+        }else{
+          throw new ShopNotExistInStore(cifShop,_nombreStore);
+        }
+
+
+      }
+
+
       this.getShopProducts = function(cifShop)
       /*Metodo para obtener el iterador de productos de shop*/
       {
@@ -580,6 +626,8 @@ var StoreHouse = (function(){
           return _users.length;
         }
       }
+      
+      
 
       this.GetUserByName = function (userName)
       /*Metodo para Obtener un usuario ya registrado*/
