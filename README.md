@@ -1,7 +1,9 @@
 # ERP-FORMS  
     
 ## Version 0.0.2  
-Implementacion de las distinas funciones para generar elementos de formulario  
+Implementacion de las distinas funciones para generar elementos de formulario.  
+Implementacion de las funciones para insertar, modificar y eliminar Categorias a traves de formularios.  
+Implementacion de las funciones para insertar, modificar y eliminar Productos a traves de formularios.  
   
 ## Version 0.0.1  
 Implementacion del objeto usuario. Se usara para comprobar la informacion introducida en el login de la pagina.  

@@ -324,7 +324,7 @@ function Shop(cif,nombre,direccion,telefono,coords)
    /*Metodo para remover un producto, requiere la Id del producto*/
    {
     var removPro = _stock.findIndex(function(element){
-      return (element.producto.IdProduct === proId);
+      return (element.producto.IdProduct == proId);
     });
     if( removPro != -1){
       _stock.splice(removPro,1);

@@ -491,7 +491,9 @@ function checkRemoveCategory()
   }
 }
 
-function checkModCategory(){
+function checkModCategory()
+/*Funcion que toma los valores del formulario y modifica la categoria seleccionada*/
+{
   clearModal();
   console.log("Listo para probar los valores del formulario!"); 
   var destino = FormCategory.elements.namedItem("updateTarget").value;

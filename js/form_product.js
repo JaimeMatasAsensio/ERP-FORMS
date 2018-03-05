@@ -34,7 +34,9 @@ function loadFormAddProduct()
 
 }
 
-function LoadModifyProduct(){
+function LoadModifyProduct()
+/*Funcion iniicial, asociada al menu de navegacion. Permite el acceso a los formularios de modificacion de productos*/
+{
   if(document.cookie){ 
     clearFormProd();
     clearMainCont();
@@ -61,7 +63,9 @@ function LoadModifyProduct(){
   }
 }
 
-function ChargeSelectProductsInShop(field){
+function ChargeSelectProductsInShop(field)
+/*Funcion que lista en un select todos los productos de una tienda para su modificacion*/
+{
   var fieldset = field;
   return function (){
     var target = FormProduct.elements.namedItem("ModIn").value;
@@ -87,10 +91,85 @@ function ChargeSelectProductsInShop(field){
 }
 
 
-function loadFormRemoveProduct(){
-  
+function loadFormRemoveProduct()
+/*Funcion inicial, asociada al menu de navegacion para acceder al formulario de eliminacion de un producto*/
+{
+  if(document.cookie){ 
+    clearFormProd();
+    clearMainCont();
+    FormProduct.className = "form-horizontal formularios";
+    IdMainCont.appendChild(FormProduct);
+
+    var fieldsetAddProduct = document.createElement("fieldset");
+    FormProduct.appendChild(fieldsetAddProduct);
+
+    var legendAddProduct = document.createElement("legend");
+    legendAddProduct.appendChild(document.createTextNode("Eliminar producto"));
+    fieldsetAddProduct.appendChild(legendAddProduct);
+    var selectShop = GenerateInputSelectForShops(Store.shopIte,"RevIn","Eliminar Producto En");
+    fieldsetAddProduct.appendChild(selectShop);
+    
+    selectShop.addEventListener("change",ChargeSelectRemoveProductsInShop(fieldsetAddProduct));
+    
+    FormProduct.elements.namedItem("RevIn").focus();
+
+    
+  }else{
+    var message = "No tiene acceso a los formularios de 'Añadir Categoria'. Haga Log In...";
+    WriteErrorModal(message);
+  }
 }
-function generateFormAddProduct(fieldset){
+
+function ChargeSelectRemoveProductsInShop(field)
+/*Funcion que lista en un select todos los productos de una tienda para elegir uno y eliminarlo*/
+{
+  var fieldset = field;
+  return function (){
+    var target = FormProduct.elements.namedItem("RevIn").value;
+    var inputs = field.children;
+    if(inputs.length > 2){
+      while (inputs.length > 2) {
+        field.removeChild(inputs[inputs.length - 1]);
+      }
+    }
+    if(target == "store"){
+      var ite = Store.stockIte;
+      var selectPro = GenerateInputSelectForProducts(ite,"targetPro","Producto a modificar");
+      fieldset.appendChild(selectPro);
+      selectPro.addEventListener("change",generateFormRemoveProd(fieldset));
+    }else{
+      var shop = Store.getShopByCif(target);
+      var ite = shop.stockIte;
+      var selectPro = GenerateInputSelectForProducts(ite,"targetPro","Producto a modificar");
+      fieldset.appendChild(selectPro);
+      selectPro.addEventListener("change",generateFormRemoveProd(fieldset));
+    }
+  }
+}
+
+
+function generateFormRemoveProd(fieldset)
+/*Funcion que genera el formulario de eliminacion de un producto*/
+{
+  var field = fieldset;
+  return function(){
+    var target = FormProduct.elements.namedItem("RevIn").value;
+    var inputs = field.children;
+
+    if(inputs.length > 3){
+      while (inputs.length > 3) {
+        field.removeChild(inputs[inputs.length - 1]);
+      }
+    }
+    
+    field.appendChild(GenerateSubmitButtons(checkRemoveProduct, "Eliminar producto"));
+
+
+  }
+}
+function generateFormAddProduct(fieldset)
+/*Funcion que genera el formulario de inserccion de un nuevo producto*/
+{
   var field = fieldset;
   return function(){
     var target = FormProduct.elements.namedItem("addTo").value;
@@ -131,7 +210,9 @@ function generateFormAddProduct(fieldset){
   }
 }
 
-function LoadTypeProductFields(fieldset){
+function LoadTypeProductFields(fieldset)
+/*Carga los distiontos campos para cada uno de los tipos de productos existentes*/
+{
   var field = fieldset;
   return function (){
     var inputs = field.children;
@@ -177,7 +258,9 @@ function LoadTypeProductFields(fieldset){
 
 }
 
-function generateFormModifyProd(field){
+function generateFormModifyProd(field)
+/*Funcion que carga el formulario de modificacion de un producto seleccionado*/
+{
   var field = field;
   return function(){
     var targetShop = FormProduct.elements.namedItem("ModIn").value;
@@ -280,7 +363,9 @@ function generateFormModifyProd(field){
 
 }
 
-function checkAddProduct(){
+function checkAddProduct()
+/*Funcion que añade un producto nuevo en una tienda o en el store house*/
+{
   var sn = FormProduct.elements.namedItem("SN").value;
   var nombre = FormProduct.elements.namedItem("nombre").value;
   var descripcion = FormProduct.elements.namedItem("desc").value;
@@ -350,7 +435,9 @@ function checkAddProduct(){
 }
 
 
-function checkModProduct(){
+function checkModProduct()
+/*Funcion que modifica una categoria en el storehouse o en una de las tiendas */
+{
   var targetPro = FormProduct.elements.namedItem("idPro").value;
   var nombre = FormProduct.elements.namedItem("nombre").value;
   var descripcion = FormProduct.elements.namedItem("desc").value;
@@ -467,7 +554,24 @@ function checkModProduct(){
 }
 
 
-
+function checkRemoveProduct()
+/*Funcion para remover productos del storehouse o de una tienda*/
+{
+  var target = FormProduct.elements.namedItem("RevIn").value;
+  var targetPro = FormProduct.elements.namedItem("targetPro").value;
+  try {
+    if(target == "store"){
+      Store.RemoveProduct(targetPro);
+      WriteSuccessModal("Producto Eliminado!!","Se ha eliminado un producto de la tienda " + Store.nombre);
+    }else{
+      var shop = Store.getShopByCif(target);
+      shop.RemoveProduct(targetPro);
+      WriteSuccessModal("Producto Eliminado!!","Se ha eliminado un producto de la tienda " + shop.nombre);
+    }
+  } catch (e) {
+    WriteErrorModal(e.message);
+  }
+}
 
 
 
