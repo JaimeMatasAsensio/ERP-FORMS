@@ -273,7 +273,7 @@ InvalidValueForIVA.prototype.toString = function(){
 
     //Validacion de parametros
     if(!marca) throw new UndefinedParameter("marca");
-    if(!portatil) throw new UndefinedParameter("modelo");
+    if(!portatil) throw new UndefinedParameter("portatil");
     if(!numJugadores) throw new UndefinedParameter("memoria");
 
     //Parametros privados

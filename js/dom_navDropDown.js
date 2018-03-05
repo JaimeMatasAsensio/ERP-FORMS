@@ -93,10 +93,17 @@ function menuDropDown(liId)
           modificarProducto.appendChild(document.createTextNode("Modificar Producto"));
           divDrop.appendChild(modificarProducto);
           
-          var añadirProducto = document.createElement("a");
-          añadirProducto.appendChild(document.createTextNode("Añadir Producto"));
-          divDrop.appendChild(añadirProducto);
+          var aniadirProducto = document.createElement("a");
+          aniadirProducto.appendChild(document.createTextNode("Añadir Producto"));
+          divDrop.appendChild(aniadirProducto);
           
+          if(!document.cookie){
+            aniadirProducto.setAttribute("data-toggle","modal");
+            aniadirProducto.setAttribute("data-target","#infoModal");  
+          }
+
+          aniadirProducto.addEventListener("click", loadFormAddProduct);
+
           var eliminarProducto = document.createElement("a");
           eliminarProducto.appendChild(document.createTextNode("Eliminar Producto"));
           divDrop.appendChild(eliminarProducto);
