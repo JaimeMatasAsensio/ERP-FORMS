@@ -73,6 +73,22 @@ function GenerateInputText(nameInput,labelText,valueInput)
   return divFormGroup;
 
 }
+function GenerateInputHidden(nameInput,valueInput)
+/*Obtenemos un input de tipo texto*/
+{
+  var value = valueInput||"";
+  
+  var input = document.createElement("input");
+  input.className = "form-control";
+  input.setAttribute("name",nameInput);
+  input.setAttribute("type","hidden");
+  input.setAttribute("value",value);
+  input.setAttribute("autocomplete","off");
+
+  
+  return input;
+
+}
 
 function GenerateInputNumber(nameInput,labelText,valueInput)
 /*Obtenemos un input de tipo number*/
@@ -346,6 +362,45 @@ function GenerateInputSelectForCategories(catIte,nameInput,labeltext)
     opt.appendChild(document.createTextNode(item.value.titulo));
     inputSelect.appendChild(opt);
     item = catIte.next();
+  }
+
+  return divFormGroup;
+}
+
+function GenerateInputSelectForProducts(proIte,nameInput,labeltext)
+/*Genera un select con los procutos de una tienda como opcion*/
+{
+
+  var divFormGroup = document.createElement("div");
+  divFormGroup.className = "form-group";
+
+  var labelInput = document.createElement("label");
+  labelInput.className = "col-sm-3 control-label";
+  labelInput.setAttribute("for",nameInput);
+  labelInput.appendChild(document.createTextNode(labeltext));
+  divFormGroup.appendChild(labelInput);
+
+  var div = document.createElement("div");
+  div.className = "col-sm-9";
+  divFormGroup.appendChild(div);
+
+  var inputSelect = document.createElement("select");
+  inputSelect.className = "form-control";
+  inputSelect.setAttribute("name",nameInput);
+  div.appendChild(inputSelect);
+
+  var initOption = document.createElement("option");
+  initOption.setAttribute("value","");
+  initOption.appendChild(document.createTextNode(""));
+  inputSelect.appendChild(initOption);
+
+  var item = proIte.next();
+  while(!item.done){
+    var opt = document.createElement("option");
+    opt.setAttribute("value",item.value.producto.IdProduct);
+    opt.appendChild(document.createTextNode(item.value.producto.nombre + " - " + item.value.producto.SN));
+    inputSelect.appendChild(opt);
+    item = proIte.next();
   }
 
   return divFormGroup;

@@ -334,6 +334,21 @@ function Shop(cif,nombre,direccion,telefono,coords)
     }
 
    }
+
+   this.GetProductByID = function(proId)
+      /*Metodo para obtener un producto, requiere la Id del producto*/
+      {
+        var index = _stock.findIndex(function(element){
+          return (element.producto.IdProduct == proId);
+        });
+        if( index != -1){
+          return _stock[index];
+        }else{
+          throw new ProductNotExistInStore(proId,_nombreStore);
+        }
+
+      }
+
     this.getProduct = function(proId)
     /*Metodo para Obtener un producto, requiere la Id del producto*/
     {

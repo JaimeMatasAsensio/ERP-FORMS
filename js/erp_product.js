@@ -100,7 +100,7 @@ InvalidValueForIVA.prototype.toString = function(){
     Object.defineProperty(this,"nombre",{
       get: function(){ return _nombre },
       set: function(newNombre){
-        if(nombre) throw new UndefinedParameter("nombre");
+        if(!newNombre) throw new UndefinedParameter("nombre");
         _nombre = newNombre;
       }
     });
@@ -108,7 +108,7 @@ InvalidValueForIVA.prototype.toString = function(){
     Object.defineProperty(this,"descripcion",{
       get: function(){return _descripcion},
       set: function(newDescripcion){
-        if(descripcion) throw new UndefinedParameter("descripcion");
+        if(!newDescripcion) throw new UndefinedParameter("descripcion");
         _descripcion = newDescripcion;
       }
     });
@@ -179,21 +179,21 @@ InvalidValueForIVA.prototype.toString = function(){
     Object.defineProperty(this,"marca",{
       get: function(){return _marca},
       set: function(newMarca){
-        if(newMarca) throw new UndefinedParameter("marca");
+        if(!newMarca) throw new UndefinedParameter("marca");
         _marca = newMarca;
       }
     });
     Object.defineProperty(this,"camara",{
       get: function(){return _camara},
       set: function(NewCamara){
-        if(NewCamara) throw new UndefinedParameter("camara");
+        if(!NewCamara) throw new UndefinedParameter("camara");
         _camara = NewCamara;
       }
     });
     Object.defineProperty(this,"memoria",{
       get: function(){return _memoria},
       set: function(newMemoria){
-        if(newMemoria) throw new UndefinedParameter("memoria");
+        if(!newMemoria) throw new UndefinedParameter("memoria");
         _memoria = newMemoria;
       }
     });
@@ -233,21 +233,21 @@ InvalidValueForIVA.prototype.toString = function(){
     Object.defineProperty(this,"marca",{
       get: function(){return _marca},
       set: function(newMarca){
-        if(newMarca) throw new UndefinedParameter("marca");
+        if(!newMarca) throw new UndefinedParameter("marca");
         _marca = newMarca;
       }
     });
     Object.defineProperty(this,"cpu",{
       get: function(){return _cpu},
       set: function(newCpu){
-        if(newCpu) throw new UndefinedParameter("cpu");
+        if(!newCpu) throw new UndefinedParameter("cpu");
         _cpu = newCpu;
       }
     });
     Object.defineProperty(this,"memoria",{
       get: function(){return _memoria},
       set: function(newMemoria){
-        if(newMemoria) throw new UndefinedParameter("memoria");
+        if(!newMemoria) throw new UndefinedParameter("memoria");
         _memoria = newMemoria;
       }
     });
@@ -285,21 +285,21 @@ InvalidValueForIVA.prototype.toString = function(){
     Object.defineProperty(this,"marca",{
       get: function(){return _marca},
       set: function(newMarca){
-        if(newMarca) throw new UndefinedParameter("marca");
+        if(!newMarca) throw new UndefinedParameter("marca");
         _marca = newMarca;
       }
     });
     Object.defineProperty(this,"numJugadores",{
       get: function(){return _numJugadores},
       set: function(newnumJugadores){
-        if(newnumJugadores) throw new UndefinedParameter("numJugadores");
+        if(!newnumJugadores) throw new UndefinedParameter("numJugadores");
         _numJugadores = newnumJugadores;
       }
     });
     Object.defineProperty(this,"portatil",{
       get: function(){return _portatil},
       set: function(newportatil){
-        if(newportatil) throw new UndefinedParameter("portatil");
+        if(!newportatil) throw new UndefinedParameter("portatil");
         _portatil = newportatil;
       }
     });
@@ -336,21 +336,21 @@ InvalidValueForIVA.prototype.toString = function(){
      Object.defineProperty(this,"marca",{
       get: function(){return _marca},
       set: function(newMarca){
-        if(newMarca) throw new UndefinedParameter("marca");
+        if(!newMarca) throw new UndefinedParameter("marca");
         _marca = newMarca;
       }
     });
     Object.defineProperty(this,"lente",{
       get: function(){return _lente},
       set: function(newLente){
-        if(newLente) throw new UndefinedParameter("lente");
+        if(!newLente) throw new UndefinedParameter("lente");
         _lente = newLente;
       }
     });
     Object.defineProperty(this,"memoria",{
       get: function(){return _memoria},
       set: function(newMemoria){
-        if(newMemoria) throw new UndefinedParameter("memoria");
+        if(!newMemoria) throw new UndefinedParameter("memoria");
         _memoria = newMemoria;
       }
     });
